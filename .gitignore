@@ -1,0 +1,7 @@
+*.pyc
+*.txt
+*.jpg
+*.png
+*.JPEG
+*meta
+*ckpt
