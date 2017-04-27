@@ -5,3 +5,8 @@
 *.JPEG
 *meta
 *ckpt
+*npy
+*npz
+*mat
+*jpg
+*webp

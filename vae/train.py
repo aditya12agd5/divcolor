@@ -42,24 +42,13 @@ FLAGS = flags.FLAGS
 def main():
   if(len(sys.argv) == 1):
     raise NameError('[ERROR] No dataset key')
-  elif(sys.argv[1] == 'imagenetval'):
-    FLAGS.updates_per_epoch = 1531
-    FLAGS.log_interval = 500
-    FLAGS.out_dir = '/data/ardeshp2/output_imagenetval/'
-    FLAGS.list_dir = 'data/imglist/imagenetval/'
-    FLAGS.pc_dir = 'data/pcomp/imagenetval/'
   elif(sys.argv[1] == 'lfw'):
     FLAGS.updates_per_epoch = 380
     FLAGS.log_interval = 120
-    FLAGS.out_dir = '/data/ardeshp2/output_lfw/'
+    FLAGS.out_dir = 'data/output/lfw/'
     FLAGS.list_dir = 'data/imglist/lfw/'
     FLAGS.pc_dir = 'data/pcomp/lfw/'
-  elif(sys.argv[1] == 'church'):
-    FLAGS.updates_per_epoch = 3913
-    FLAGS.log_interval = 1300
-    FLAGS.out_dir = '/data/ardeshp2/output_church/'
-    FLAGS.list_dir = 'data/imglist/church/'
-    FLAGS.pc_dir = 'data/pcomp/church/'
+  #add other datasets here
   else:
     raise NameError('[ERROR] Incorrect dataset key')
 

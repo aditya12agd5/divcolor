@@ -156,17 +156,17 @@ def main():
 		FLAGS.updates_per_epoch = 49000
 		FLAGS.num_test_batches = 1000
 		FLAGS.in_featdir = 'data/featslist/imagenetval/' 
-		FLAGS.in_lvdir = '/data/ardeshp2/output_imagenetval/' 
+		FLAGS.in_lvdir = 'data/output/imagenetval/' 
 	elif(sys.argv[1] == 'lfw'):
 		FLAGS.updates_per_epoch = 12233
 		FLAGS.num_test_batches = 1000
 		FLAGS.in_featdir = 'data/featslist/lfw/' 
-		FLAGS.in_lvdir = '/data/ardeshp2/output_lfw/' 
+		FLAGS.in_lvdir = 'data/output/lfw/' 
 	elif(sys.argv[1] == 'church'):
 		FLAGS.updates_per_epoch = 125227
 		FLAGS.num_test_batches = 1000
 		FLAGS.in_featdir = 'data/featslist/church/' 
-		FLAGS.in_lvdir = '/data/ardeshp2/output_church/' 
+		FLAGS.in_lvdir = 'data/output/church/' 
 	else:
 		raise NameError('[ERROR] Incorrect dataset key')
 
