@@ -58,8 +58,6 @@ class network:
       sess, num_batches=num_train_batches, is_train=True)
 
 		epoch_latentvars_test = self.run_vae_epoch_test(2, sess, num_batches=3, is_train=False)
-		epoch_latentvars_test = None 
-		epoch_latentvars_train = None 
 
 		sess.close()
 		return epoch_latentvars_train, epoch_latentvars_test 
