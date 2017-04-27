@@ -166,8 +166,8 @@ class lab_imageloader:
       img_rgb = cv2.cvtColor(img_lab, cv2.COLOR_LAB2BGR)
       out_fn_pred = '%s/%s/%s_%03d.png' % (self.out_directory, imgname, prefix, i)
       cv2.imwrite(out_fn_pred, img_rgb)
-      out_fn_mat = '%s/%s/%s_%03d.mat' % (self.out_directory, imgname, prefix, i)
-      np.save(out_fn_mat, img_lab_mat)
+#      out_fn_mat = '%s/%s/%s_%03d.mat' % (self.out_directory, imgname, prefix, i)
+#      np.save(out_fn_mat, img_lab_mat)
     img_lab[..., 0] = self.__get_decoded_img(net_recon_const[i, ...].reshape(self.outshape[0], self.outshape[1]))
     img_lab[..., 1] = self.__get_decoded_img(gt[0, :np.prod(self.shape)].reshape(self.shape[0], self.shape[1]))
     img_lab[..., 2] = self.__get_decoded_img(gt[0, np.prod(self.shape):].reshape(self.shape[0], self.shape[1]))
@@ -176,8 +176,8 @@ class lab_imageloader:
     out_fn_pred = '%s/%s/gt.png' % (self.out_directory, imgname)
     img_rgb = cv2.cvtColor(img_lab, cv2.COLOR_LAB2BGR)
     cv2.imwrite(out_fn_pred, img_rgb)
-    out_fn_mat = '%s/%s/gt.mat' % (self.out_directory, imgname)
-    np.save(out_fn_mat, img_lab_mat)
+#    out_fn_mat = '%s/%s/gt.mat' % (self.out_directory, imgname)
+#    np.save(out_fn_mat, img_lab_mat)
 
   def __get_decoded_img(self, img_enc):
     img_dec = 128.*img_enc + 128
