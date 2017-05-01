@@ -25,3 +25,9 @@ If you use this code, please cite
   year={2017}                                                                                       
 } 
 ```
+
+Some examples of diverse colorizations on LFW, LSUN Church and ImageNet-Val dataset
+
+<p align='center'>
+<img src='./images/divcolor_figure.png' width=500 />
+</p>
