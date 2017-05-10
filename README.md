@@ -43,3 +43,9 @@ Some examples of diverse colorizations on LFW, LSUN Church and ImageNet-Val data
 <p align='center'>
 <img src='./images/divcolor_figure.png' width=750 />
 </p>
+
+Some examples of diverse colorizations for images in the wild, model is trained on imagenet 
+
+<p align='center'>
+<img src='./images/divcolor_imagenet.png' width=750 />
+</p>
