@@ -187,7 +187,6 @@ class network:
 		self.data_loader.reset()
 		kl_weight = 0.
 		for i in range(num_batches):
-			print ('[DEBUG] Batch %d (/ %d)' % (i, num_batches))
 			batch, batch_recon_const, batch_recon_const_outres, batch_imgnames = \
 				self.data_loader.test_next_batch(self.flags.batch_size, self.nch)
 			batch_lossweights = np.ones((self.flags.batch_size, \
@@ -196,6 +195,10 @@ class network:
 				self.nch*self.flags.img_height*self.flags.img_width), dtype='f')
 			for j in range(self.flags.batch_size):
 				imgid = i*self.flags.batch_size+j
+				print ('[DEBUG] Running divcolor on Image %d (/%d)' % \
+          (imgid, self.data_loader.test_img_num))
+				if(imgid >= self.data_loader.test_img_num):
+					break
 				batch_1 = np.tile(batch[j, ...], (self.flags.batch_size, 1))	
 				batch_recon_const_1 = np.tile(batch_recon_const[j, ...], (self.flags.batch_size, 1))
 				batch_recon_const_outres_1 = np.tile(batch_recon_const_outres[j, ...], (self.flags.batch_size, 1))
@@ -207,12 +210,9 @@ class network:
 					self.plhold_lossweights: batch_lossweights, 
 					self.plhold_greylevel:batch_recon_const_1}
 					
-				try:
-					_, output  = sess.run(\
+				_, output  = sess.run(\
 						[self.check_nan_op, self.op_vae_condinference], \
 						feed_dict)
-				except:
-					raise NameError('[ERROR] Found nan values in condinference_vae_nocluster')
 				
 				self.data_loader.save_divcolor(output[:topk], batch_1[:topk], i, j, \
 					'divcolor', topk, batch_imgnames[j], num_cols=8, \

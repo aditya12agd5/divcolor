@@ -2,16 +2,28 @@ Tensorflow implementation of Deshpande et al. "[Learning Diverse Image Colorizat
 
 The code is tested for Tensorflow v1.0.1 and python-2.7
 
-Fetch lfw dataset by
+Fetch data by
 
 ```
 bash get_data.sh
 ```
 
-Execute run.sh to first train vae+mdn and then, generate results for test set
+Fetch Zhang et al. colorization network for MDN features by
 
 ```
-bash run.sh
+bash get_zhang_colorization.sh
+```
+
+Execute run_lfw.sh to first train vae+mdn and then, generate results for LFW
+
+```
+bash run_lfw.sh
+```
+
+Execute run_demo.sh to get diverse colorization for any image, the model is trained on imagenet
+
+```
+bash run_demo.sh
 ```
 
 If you use this code, please cite                                                                   

@@ -11,16 +11,10 @@ class lab_imageloader:
 
     if(listdir == None):
       if(subdir==False):
-        self.img_fns = glob.glob('%s/*.%s' % (data_directory, ext))
+        self.test_img_fns = glob.glob('%s/*.%s' % (data_directory, ext))
       else:
-        self.img_fns = glob.glob('%s/*/*.%s' % (data_directory, ext))
-      np.random.seed(seed=0)
-      selectids = np.random.permutation(len(self.img_fns))
-      fact_train = .9
-      self.train_img_fns = \
-        [self.img_fns[l] for l in selectids[:np.int_(np.round(fact_train*len(self.img_fns)))]]
-      self.test_img_fns = \
-        [self.img_fns[l] for l in selectids[np.int_(np.round(fact_train*len(self.img_fns))):]]
+        self.test_img_fns = glob.glob('%s/*/*.%s' % (data_directory, ext))
+      self.train_img_fns = []
     else:
       self.train_img_fns = []
       self.test_img_fns = []
@@ -37,7 +31,7 @@ class lab_imageloader:
     self.train_batch_head = 0
     self.test_batch_head = 0
     self.train_shuff_ids = np.random.permutation(len(self.train_img_fns))
-    self.test_shuff_ids = np.random.permutation(len(self.test_img_fns))
+    self.test_shuff_ids = range(len(self.test_img_fns))
     self.shape = shape
     self.outshape = outshape
     self.out_directory = out_directory
@@ -63,7 +57,7 @@ class lab_imageloader:
     self.train_batch_head = 0
     self.test_batch_head = 0
     self.train_shuff_ids = np.random.permutation(len(self.train_img_fns))
-    self.test_shuff_ids = np.random.permutation(len(self.test_img_fns))
+    self.test_shuff_ids = range(len(self.test_img_fns))
   
   def train_next_batch(self, batch_size, nch):
     batch = np.zeros((batch_size, nch*np.prod(self.shape)), dtype='f')
@@ -106,6 +100,9 @@ class lab_imageloader:
       self.test_batch_head = 0
 
     for i_n, i in enumerate(range(self.test_batch_head, self.test_batch_head+batch_size)):
+      if(i >= self.test_img_num):
+        #Repeat first image to make up for incomplete last batch
+        i = 0  
       currid = self.test_shuff_ids[i]
       img_large = cv2.imread(self.test_img_fns[currid])
       batch_imgnames.append(self.test_img_fns[currid].split('/')[-1])
@@ -122,7 +119,7 @@ class lab_imageloader:
         ((img_lab[..., 2].reshape(-1)*1.)-128.)/128.), axis=0)
 
     self.test_batch_head = self.test_batch_head + batch_size
-
+  
     return batch, batch_recon_const, batch_recon_const_outres, batch_imgnames
   
   def save_output_with_gt(self, net_op, gt, epoch, itr_id, prefix, batch_size, num_cols=8, net_recon_const=None):
