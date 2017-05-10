@@ -1,11 +1,7 @@
 import os
-os.environ["CUDA_VISIBLE_DEVICES"]="2"
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 import socket
 import sys
-if socket.gethostname()=='vision-gpu-1' or socket.gethostname()=='vision-gpu-2':
-  sys.path.insert(0, '/home/nfs/ardeshp2/tensorflow_r1/lib/python2.7/site-packages/')
-else:
-  sys.path.insert(0, '/home/nfs/ardeshp2/tensorflow_r1_pascal/lib/python2.7/site-packages/')
 
 import tensorflow as tf
 import numpy as np
