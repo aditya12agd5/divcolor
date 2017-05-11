@@ -1,6 +1,7 @@
 Tensorflow implementation of Deshpande et al. "[Learning Diverse Image Colorization](https://arxiv.org/abs/1612.01958)"                 
 
-The code is tested for Tensorflow v1.0.1 and python-2.7
+The code is tested for Tensorflow-v1.0.1 and python-2.7. The code additionally needs numpy, scipy,
+scikit-learn and caffe-r1.0 (caffe only for Zhang et al. colorization network).  
 
 Fetch data by
 
