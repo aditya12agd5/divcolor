@@ -186,6 +186,7 @@ class network:
 		self.__load_chkpt(sess, chkptdir)
 		self.data_loader.reset()
 		kl_weight = 0.
+		nmix = topk
 		for i in range(num_batches):
 			batch, batch_recon_const, batch_recon_const_outres, batch_imgnames = \
 				self.data_loader.test_next_batch(self.flags.batch_size, self.nch)
@@ -202,7 +203,12 @@ class network:
 				batch_1 = np.tile(batch[j, ...], (self.flags.batch_size, 1))	
 				batch_recon_const_1 = np.tile(batch_recon_const[j, ...], (self.flags.batch_size, 1))
 				batch_recon_const_outres_1 = np.tile(batch_recon_const_outres[j, ...], (self.flags.batch_size, 1))
-				latent_feed = latentvars[imgid*self.flags.batch_size:(imgid+1)*self.flags.batch_size, ...]	
+				curr_means = latentvars[imgid, :self.flags.hidden_size*nmix].reshape(nmix, self.flags.hidden_size)	
+				curr_sigma = latentvars[imgid, self.flags.hidden_size*nmix:(self.flags.hidden_size+1)*nmix].reshape(-1)	
+				curr_pi = latentvars[imgid, (self.flags.hidden_size+1)*nmix:].reshape(-1)	
+				selectid = np.argsort(-1*curr_pi)	
+				latent_feed = np.tile(curr_means[selectid, ...], (np.int_(np.round((self.flags.batch_size*1.)/nmix)), 1))
+	
 				feed_dict = {self.plhold_img:batch_1, self.plhold_is_training:False, \
 					self.plhold_keep_prob:1., \
 					self.plhold_kl_weight:kl_weight, \

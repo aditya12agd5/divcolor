@@ -63,22 +63,13 @@ def main():
     nmix = 8
     lv_mdn_test = np.load(os.path.join(FLAGS.in_dir, 'lv_color_mdn_test.mat.npy'))
     num_batches = np.int_(np.ceil((lv_mdn_test.shape[0]*1.)/FLAGS.batch_size))
-    latent_vars_colorfield_test = np.zeros((0, FLAGS.hidden_size), dtype='f')
-    for i in range(lv_mdn_test.shape[0]):
-      curr_means = lv_mdn_test[i, :FLAGS.hidden_size*nmix].reshape(nmix, FLAGS.hidden_size)
-      curr_sigma = lv_mdn_test[i, FLAGS.hidden_size*nmix:(FLAGS.hidden_size+1)*nmix].reshape(-1)
-      curr_pi = lv_mdn_test[i, (FLAGS.hidden_size+1)*nmix:].reshape(-1)
-      selectid = np.argsort(-1*curr_pi)
-      curr_sample = np.tile(curr_means[selectid, ...], (np.int_(np.round((FLAGS.batch_size*1.)/nmix)), 1))
-      latent_vars_colorfield_test = \
-        np.concatenate((latent_vars_colorfield_test, curr_sample), axis=0)
  
     graph_divcolor = tf.Graph()
     with graph_divcolor.as_default():
       model_colorfield = vae(FLAGS, nch=2, condinference_flag=True)
       dnn = network(model_colorfield, data_loader, 2, FLAGS)
       dnn.run_divcolor('data/imagenet_models/' , \
-        latent_vars_colorfield_test, num_batches=num_batches)
+        lv_mdn_test, num_batches=num_batches)
   
 if __name__ == "__main__":
   main()
