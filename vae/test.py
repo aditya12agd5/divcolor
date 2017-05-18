@@ -39,24 +39,12 @@ FLAGS = flags.FLAGS
 def main():
   if(len(sys.argv) == 1):
     raise NameError('[ERROR] No dataset key')
-  elif(sys.argv[1] == 'imagenetval'):
-    FLAGS.updates_per_epoch = 1531
-    FLAGS.log_interval = 500
-    FLAGS.out_dir = 'data/output/imagenetval/'
-    FLAGS.list_dir = 'data/imglist/imagenetval/'
-    FLAGS.pc_dir = 'data/pcomp/imagenetval/'
   elif(sys.argv[1] == 'lfw'):
     FLAGS.updates_per_epoch = 380
     FLAGS.log_interval = 120
     FLAGS.out_dir = 'data/output/lfw/'
     FLAGS.list_dir = 'data/imglist/lfw/'
     FLAGS.pc_dir = 'data/pcomp/lfw/'
-  elif(sys.argv[1] == 'church'):
-    FLAGS.updates_per_epoch = 3913
-    FLAGS.log_interval = 1300
-    FLAGS.out_dir = 'data/output/church/'
-    FLAGS.list_dir = 'data/imglist/church/'
-    FLAGS.pc_dir = 'data/pcomp/church/'
   else:
     raise NameError('[ERROR] Incorrect dataset key')
   data_loader = lab_imageloader(FLAGS.in_dir, \
@@ -67,15 +55,6 @@ def main():
   nmix = 8
   num_batches = 31
   lv_mdn_test = np.load(os.path.join(FLAGS.out_dir, 'lv_color_mdn_test.mat.npy'))
-  latent_vars_colorfield_test = np.zeros((0, FLAGS.hidden_size), dtype='f')
-  for i in range(lv_mdn_test.shape[0]):
-    curr_means = lv_mdn_test[i, :FLAGS.hidden_size*nmix].reshape(nmix, FLAGS.hidden_size)
-    curr_sigma = lv_mdn_test[i, FLAGS.hidden_size*nmix:(FLAGS.hidden_size+1)*nmix].reshape(-1)
-    curr_pi = lv_mdn_test[i, (FLAGS.hidden_size+1)*nmix:].reshape(-1)
-    selectid = np.argsort(-1*curr_pi)
-    curr_sample = np.tile(curr_means[selectid, ...], (np.int_(np.round((FLAGS.batch_size*1.)/nmix)), 1))
-    latent_vars_colorfield_test = \
-      np.concatenate((latent_vars_colorfield_test, curr_sample), axis=0)
    
   graph_divcolor = tf.Graph()
   with graph_divcolor.as_default():
@@ -85,7 +64,7 @@ def main():
       latent_vars_colorfield_test, num_batches=num_batches)
     if(FLAGS.is_run_cvae == True):
       dnn.run_cvae(os.path.join(FLAGS.out_dir, 'models') , \
-       latent_vars_colorfield_test, num_batches=num_batches, num_repeat=8, num_cluster=5)
+       lv_mdn_test, num_batches=num_batches, num_repeat=8, num_cluster=5)
   
 if __name__ == "__main__":
   main()
