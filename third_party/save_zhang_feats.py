@@ -10,7 +10,7 @@ import skimage.io
 import scipy.ndimage.interpolation as sni
 import cv2
 
-def save_zhang_feats(img_fns):
+def save_zhang_feats(img_fns, ext='JPEG'):
 
 	gpu_id = 0
 	caffe.set_mode_gpu()
@@ -44,7 +44,7 @@ def save_zhang_feats(img_fns):
 		net.blobs['data_l'].data[0,0,:,:] = img_l_rs-50 # subtract 50 for mean-centering
 		net.forward() # run network
 
-		npz_fn = img_fn.replace('JPEG', 'npz')
+		npz_fn = img_fn.replace(ext, 'npz')
 		np.savez_compressed(npz_fn, net.blobs['conv7_3'].data)
 		feats_fns.append(npz_fn)
 

@@ -40,12 +40,13 @@ def main():
   FLAGS.log_interval = 1
   FLAGS.list_dir = None 
   FLAGS.in_dir = 'data/testimgs/'
+  FLAGS.ext = 'JPEG'
   data_loader = lab_imageloader(FLAGS.in_dir, \
-    'data/output/testimgs', listdir=None)
+    'data/output/testimgs', listdir=None, ext=FLAGS.ext)
   img_fns = data_loader.test_img_fns
   
   if(FLAGS.is_only_data == True):
-    feats_fns = save_zhang_feats(img_fns)
+    feats_fns = save_zhang_feats(img_fns, ext=FLAGS.ext)
   
     with open('%s/list.train.txt' % FLAGS.in_dir, 'w') as fp:
      for feats_fn in feats_fns:
